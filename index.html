@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkadiko Vibe Dashboard 🚀</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; padding: 20px; text-align: center; }
+        h1 { color: #4CAF50; }
+        ul { list-style: none; padding: 0; }
+        li { background: white; margin: 10px; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .price { color: #2196F3; font-weight: bold; }
+        .volume { color: #FF5722; }
+        .liquidity { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>Arkadiko AMM Vibe Dashboard 📊</h1>
+    <p>Stack your vibes with real-time DeFi data! Built for Arkadiko Bounty.</p>
+    <ul id="tickers"></ul>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('https://arkadiko-api.herokuapp.com/api/v1/tickers');
+                const data = await response.json();
+                const list = document.getElementById('tickers');
+                data.forEach(ticker => {
+                    const item = document.createElement('li');
+                    item.innerHTML = `
+                        <strong>${ticker.ticker_id} 📈</strong><br>
+                        Last Price: <span class="price">${ticker.last_price}</span><br>
+                        24h Base Volume: <span class="volume">${ticker.base_volume}</span><br>
+                        Liquidity in USD: <span class="liquidity">${ticker.liquidity_in_usd}</span> 💰
+                    `;
+                    list.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('tickers').innerHTML = '<li>Error loading data. Try refreshing! 😅</li>';
+            }
+        }
+        fetchData();
+    </script>
+</body>
+</html>
